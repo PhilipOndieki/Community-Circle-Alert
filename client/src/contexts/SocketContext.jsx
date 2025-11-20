@@ -22,7 +22,7 @@ export const SocketProvider = ({ children }) => {
       }
 
       const newSocket = io(
-        process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000',
+        import.meta.env.VITE_APP_SOCKET_URL || 'http://localhost:5000',
         {
           auth: { token },
           reconnection: true,

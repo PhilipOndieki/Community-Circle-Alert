@@ -123,8 +123,8 @@ npm install
 
 3. Create `.env` file in client directory:
 ```env
-REACT_APP_API_URL=http://localhost:5000/api
-REACT_APP_SOCKET_URL=http://localhost:5000
+VITE_APP_API_URL=http://localhost:5000/api
+VITE_APP_SOCKET_URL=http://localhost:5000
 ```
 
 4. Start the development server:
