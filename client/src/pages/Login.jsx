@@ -91,7 +91,7 @@ const Login = () => {
               label="Password"
               type="password"
               name="password"
-              value={formData.email}
+              value={formData.password}
               onChange={handleChange}
               error={errors.password}
               placeholder="Enter your password"

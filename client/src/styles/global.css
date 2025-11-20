@@ -1,5 +1,7 @@
 /* File: client/src/styles/global.css */
-/* Purpose: Global styles with CSS custom properties (theme variables) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* CSS Custom Properties (Theme Variables) */
 :root {
