@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { useAlerts, useCircles, useCheckIns } from '../hooks';
-import { useLocation } from '../contexts/LocationContext';
+import { LocationContext} from '../contexts/LocationContext';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
 import Loading from '../components/common/Loading';
@@ -17,7 +17,7 @@ const Dashboard = () => {
   const { circles } = useCircles();
   const { activeCheckIns } = useCheckIns();
   const { triggerAlert } = useAlerts();
-  const { location, startSharing, isSharing } = useLocation();
+  const { location, startSharing, isSharing } = useContext(LocationContext);
   const [showPanicConfirm, setShowPanicConfirm] = useState(false);
   const [triggering, setTriggering] = useState(false);
   const navigate = useNavigate();
