@@ -1,14 +1,15 @@
 // File: client/src/pages/Signup.jsx
-// Purpose: Signup page component
-// Dependencies: React, useAuth, Input, Button, Card
+// Purpose: Redesigned signup page with warm, welcoming design
+// Design: Safety-first onboarding experience with password strength indicator
+// Dependencies: React, React Router, useAuth, Input, Button, Card, Framer Motion
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import useAuth from '../hooks/useAuth';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
-import styles from './Login.module.css';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -33,7 +34,7 @@ const Signup = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
+
     // Check password requirements in real-time
     if (name === 'password') {
       setPasswordChecks({
@@ -43,7 +44,7 @@ const Signup = () => {
         hasNumber: /[0-9]/.test(value)
       });
     }
-    
+
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
     }
@@ -55,7 +56,7 @@ const Signup = () => {
     if (!formData.email) newErrors.email = 'Email is required';
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (!passwordChecks.minLength || !passwordChecks.hasUppercase || 
+    } else if (!passwordChecks.minLength || !passwordChecks.hasUppercase ||
                !passwordChecks.hasLowercase || !passwordChecks.hasNumber) {
       newErrors.password = 'Password does not meet all requirements';
     }
@@ -87,23 +88,48 @@ const Signup = () => {
   };
 
   return (
-    <div className={styles.loginPage}>
-      <div className={styles.loginContainer}>
-        <div className={styles.header}>
-          <h1>Join Community Circle</h1>
-          <p>Create your account to get started</p>
+    <div className="min-h-screen bg-gradient-to-br from-primary-500 via-primary-600 to-accent-500 flex items-center justify-center p-6">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-2xl"
+      >
+        {/* Header */}
+        <div className="text-center mb-10">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl font-black text-white mb-3"
+          >
+            Join Community Circle
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-white/90 text-lg"
+          >
+            Create your account to stay safe with your community
+          </motion.p>
         </div>
 
-        <Card>
-          <form onSubmit={handleSubmit}>
+        {/* Signup Card */}
+        <Card padding="spacious" shadow="strong">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <Input
-              label="Name"
+              label="Full Name"
               name="name"
               value={formData.name}
               onChange={handleChange}
               error={errors.name}
               placeholder="Enter your full name"
               required
+              icon={
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              }
             />
 
             <Input
@@ -113,8 +139,13 @@ const Signup = () => {
               value={formData.email}
               onChange={handleChange}
               error={errors.email}
-              placeholder="Enter your email"
+              placeholder="your.email@example.com"
               required
+              icon={
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                </svg>
+              }
             />
 
             <Input
@@ -123,7 +154,12 @@ const Signup = () => {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="Enter your phone number"
+              placeholder="Your phone number"
+              icon={
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+              }
             />
 
             <Input
@@ -133,71 +169,36 @@ const Signup = () => {
               value={formData.password}
               onChange={handleChange}
               error={errors.password}
-              placeholder="Create a password"
+              placeholder="Create a strong password"
               required
+              icon={
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              }
             />
 
             {/* Password Requirements Checklist */}
-            <div style={{ 
-              marginTop: '-0.5rem', 
-              marginBottom: '1rem', 
-              padding: '0.75rem', 
-              backgroundColor: '#F9FAFB', 
-              borderRadius: '8px',
-              fontSize: '0.875rem'
-            }}>
-              <p style={{ fontWeight: '500', marginBottom: '0.5rem', color: '#374151' }}>
+            <div className="p-4 bg-neutral-50 rounded-xl">
+              <p className="font-semibold text-neutral-700 mb-3 text-sm">
                 Password must contain:
               </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ 
-                    color: passwordChecks.minLength ? '#10B981' : '#9CA3AF',
-                    fontWeight: '600',
-                    fontSize: '1rem'
-                  }}>
-                    {passwordChecks.minLength ? '✓' : '○'}
-                  </span>
-                  <span style={{ color: passwordChecks.minLength ? '#10B981' : '#6B7280' }}>
-                    At least 8 characters
-                  </span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ 
-                    color: passwordChecks.hasUppercase ? '#10B981' : '#9CA3AF',
-                    fontWeight: '600',
-                    fontSize: '1rem'
-                  }}>
-                    {passwordChecks.hasUppercase ? '✓' : '○'}
-                  </span>
-                  <span style={{ color: passwordChecks.hasUppercase ? '#10B981' : '#6B7280' }}>
-                    One uppercase letter (A-Z)
-                  </span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ 
-                    color: passwordChecks.hasLowercase ? '#10B981' : '#9CA3AF',
-                    fontWeight: '600',
-                    fontSize: '1rem'
-                  }}>
-                    {passwordChecks.hasLowercase ? '✓' : '○'}
-                  </span>
-                  <span style={{ color: passwordChecks.hasLowercase ? '#10B981' : '#6B7280' }}>
-                    One lowercase letter (a-z)
-                  </span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ 
-                    color: passwordChecks.hasNumber ? '#10B981' : '#9CA3AF',
-                    fontWeight: '600',
-                    fontSize: '1rem'
-                  }}>
-                    {passwordChecks.hasNumber ? '✓' : '○'}
-                  </span>
-                  <span style={{ color: passwordChecks.hasNumber ? '#10B981' : '#6B7280' }}>
-                    One number (0-9)
-                  </span>
-                </div>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { check: passwordChecks.minLength, label: 'At least 8 characters' },
+                  { check: passwordChecks.hasUppercase, label: 'One uppercase (A-Z)' },
+                  { check: passwordChecks.hasLowercase, label: 'One lowercase (a-z)' },
+                  { check: passwordChecks.hasNumber, label: 'One number (0-9)' }
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <span className={`text-lg font-bold ${item.check ? 'text-success-500' : 'text-neutral-300'}`}>
+                      {item.check ? '✓' : '○'}
+                    </span>
+                    <span className={`text-sm ${item.check ? 'text-success-600' : 'text-neutral-500'}`}>
+                      {item.label}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -208,12 +209,23 @@ const Signup = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               error={errors.confirmPassword}
-              placeholder="Confirm your password"
+              placeholder="Re-enter your password"
               required
+              icon={
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              }
             />
 
             {errors.general && (
-              <div className={styles.errorBox}>{errors.general}</div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="p-4 bg-danger-50 border-2 border-danger-200 rounded-xl text-danger-700 text-sm font-medium"
+              >
+                {errors.general}
+              </motion.div>
             )}
 
             <Button
@@ -221,22 +233,35 @@ const Signup = () => {
               variant="primary"
               fullWidth
               loading={loading}
-              className={styles.submitButton}
+              size="large"
             >
               Create Account
             </Button>
           </form>
 
-          <div className={styles.footer}>
-            <p>
+          <div className="mt-8 pt-6 border-t-2 border-neutral-100 text-center">
+            <p className="text-neutral-600">
               Already have an account?{' '}
-              <Link to="/login" className={styles.link}>
-                Sign in
+              <Link
+                to="/login"
+                className="text-primary-600 hover:text-primary-700 font-semibold transition-colors"
+              >
+                Sign in here
               </Link>
             </p>
           </div>
         </Card>
-      </div>
+
+        {/* Trust Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-8 text-center text-white/80 text-sm"
+        >
+          <p>🔒 Your data is encrypted and secure</p>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };
