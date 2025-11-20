@@ -41,17 +41,11 @@ app.set('io', io);
 
 // Start server
 server.listen(PORT, () => {
-  console.log(`
-╔═══════════════════════════════════════════════════════════╗
-║                                                           ║
-║   Community Circle Alert Server                          ║
-║                                                           ║
-║   Status: Running                                         ║
-║   Port: ${PORT}                                            ║
-║   Environment: ${process.env.NODE_ENV || 'development'}                           ║
-║   Time: ${new Date().toLocaleString()}                  ║
-║                                                           ║
-╚═══════════════════════════════════════════════════════════╝
+  console.log(`                                                                                                                  
+    Status: Running                                         
+    Port: ${PORT}                                            
+    Environment: ${process.env.NODE_ENV || 'development'}                           
+    Time: ${new Date().toLocaleString()}                  
   `);
 });
 
