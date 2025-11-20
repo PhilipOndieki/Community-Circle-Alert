@@ -10,7 +10,7 @@ yarn.lock
 # Build output
 /client/build
 /server/dist
-
+/client/dist
 # Logs
 logs
 *.log
