@@ -62,10 +62,10 @@ jobs:
       run: |
         echo "🚀 Deploying frontend to Vercel..."
         echo "Vercel auto-deploys on push to main branch"
-        echo "Deployment URL: community-circle-alert.vercel.app"
+        echo "Deployment URL: https://community-circle-alert.vercel.app"
     
     - name: Deployment success
       run: |
         echo "✅ Frontend deployment completed!"
-        echo "App URL: community-circle-alert.vercel.app"
+        echo "App URL: https://community-circle-alert.vercel.app"
         echo "Note: Vercel GitHub integration handles automatic deployment"
