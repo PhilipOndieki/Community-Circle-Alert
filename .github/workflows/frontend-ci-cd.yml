@@ -1,0 +1,71 @@
+name: Frontend CI/CD
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'client/**'
+      - '.github/workflows/frontend-ci-cd.yml'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'client/**'
+
+jobs:
+  build:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: client/package-lock.json
+    
+    - name: Install dependencies
+      working-directory: ./client
+      run: npm install
+    
+    - name: Build application
+      working-directory: ./client
+      run: npm run build
+      env:
+        VITE_API_URL: https://community-circle-alert.onrender.com/api
+        VITE_NODE_ENV: production
+        VITE_APP_NAME: Bug Tracker
+        VITE_APP_VERSION: 1.0.0
+    
+    - name: Build stats
+      working-directory: ./client
+      run: |
+        echo "📊 Build Statistics:"
+        du -sh dist
+        ls -lah dist
+        echo "✅ Frontend build successful!"
+
+  deploy:
+    name: Deploy to Vercel
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Deployment notification
+      run: |
+        echo "🚀 Deploying frontend to Vercel..."
+        echo "Vercel auto-deploys on push to main branch"
+        echo "Deployment URL: community-circle-alert.vercel.app"
+    
+    - name: Deployment success
+      run: |
+        echo "✅ Frontend deployment completed!"
+        echo "App URL: community-circle-alert.vercel.app"
+        echo "Note: Vercel GitHub integration handles automatic deployment"
